@@ -1,9 +1,9 @@
 var request = require('request');
 var cheerio = require('cheerio');
 var fs = require('fs');
-// var article = 'https://www.ptt.cc/bbs/Tainan/M.1388172150.A.860.html';
+var article = 'https://www.ptt.cc/bbs/Tainan/M.1388172150.A.860.html';
 
-function getLinkInContent(datadict) {
+var getLinkInContent = function(datadict) {
     content = datadict.content;
     picture = datadict.picture;
     newPicture = [];
@@ -14,9 +14,9 @@ function getLinkInContent(datadict) {
         datadict.picture = newPicture;
     }
     return datadict;
-}
+};
 
-function runFetch(article) {
+var runFetch = function(article) {
     request(article, function(error, response, body) {
         if(error) {
             console.log("Error: " + error);
@@ -43,4 +43,8 @@ function runFetch(article) {
         });
         console.log(data);
     });
-}
+};
+
+
+
+runFetch(article);

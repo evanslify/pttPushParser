@@ -41,7 +41,7 @@ var runFetch = function(article) {
             datadict = getLinkInContent(datadict);
             data.push(datadict);
         });
-        console.log(data);
+        return 0;
     });
 };
 

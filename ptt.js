@@ -1,7 +1,7 @@
 var request = require('request');
 var cheerio = require('cheerio');
 var fs = require('fs');
-var article = 'https://www.ptt.cc/bbs/Tainan/M.1388172150.A.860.html';
+// var article = 'https://www.ptt.cc/bbs/Tainan/M.1388172150.A.860.html';
 
 var getLinkInContent = function(datadict) {
     content = datadict.content;
@@ -45,6 +45,4 @@ var runFetch = function(article) {
     });
 };
 
-
-
-runFetch(article);
+module.exports = runFetch;

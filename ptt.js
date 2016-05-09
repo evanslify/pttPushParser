@@ -43,10 +43,6 @@ function runFetch (article, eventEmitter) {
         console.log('crawl finished!');
         eventEmitter.emit('crawlFin', schema.collection.data);
     });
-    var ringBell = function ringBell() {
-        console.log('ring ring ring');
-    };
-    eventEmitter.on('crawlFin', ringBell);
 }
 
 module.exports = runFetch;

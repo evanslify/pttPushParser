@@ -2,6 +2,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 var fs = require('fs');
 var schema = require('./models.js');
+var api = require('./api.js');
 
 
 var getLinkInContent = function(item) {
@@ -22,9 +23,10 @@ function addToDB(item) {
     schema.collection.insert(item);
 }
 
-function runFetch (article, eventEmitter) {
+
+function runFetch (article, callback) {
     console.log("target: " + article);
-    request(article, function(error, response, body) {
+    var run = request(article, function(error, response, body) {
         if(error) {
             console.log("Error: " + error);
         }
@@ -40,8 +42,9 @@ function runFetch (article, eventEmitter) {
             item = getLinkInContent(item);
             addToDB(item);
         });
-        console.log('crawl finished!');
-        eventEmitter.emit('crawlFin', schema.collection.data);
+        callback(schema.collection.data);
+        schema.collection.removeDataOnly();
+        // schema.collection.chain().remove();
     });
 }
 

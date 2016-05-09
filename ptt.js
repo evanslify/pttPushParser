@@ -2,8 +2,6 @@ var request = require('request');
 var cheerio = require('cheerio');
 var fs = require('fs');
 var schema = require('./models.js');
-// var events = require('events');
-// var eventEmitter = new events.EventEmitter();
 
 
 var getLinkInContent = function(item) {
@@ -24,7 +22,6 @@ function addToDB(item) {
     schema.collection.insert(item);
 }
 
-// var runFetch = function (article) {
 function runFetch (article, eventEmitter) {
     console.log("target: " + article);
     request(article, function(error, response, body) {
@@ -45,7 +42,6 @@ function runFetch (article, eventEmitter) {
         });
         console.log('crawl finished!');
         eventEmitter.emit('crawlFin', schema.collection.data);
-        schema.db.save();
     });
     var ringBell = function ringBell() {
         console.log('ring ring ring');

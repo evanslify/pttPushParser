@@ -1,6 +1,5 @@
 var request = require('request');
 var cheerio = require('cheerio');
-var fs = require('fs');
 var schema = require('./models.js');
 
 
@@ -18,18 +17,20 @@ var getLinkInContent = function(item) {
 };
 
 
-function addToDB(item) {
-    schema.collection.insert(item);
+function addToDB(item, collection) {
+    collection.push(item);
 }
 
-function runFetch (article, eventEmitter) {
+
+function runFetch (article, callback) {
     console.log("target: " + article);
-    request(article, function(error, response, body) {
+    var run = request(article, function(error, response, body) {
         if(error) {
             console.log("Error: " + error);
         }
         console.log("Status code: " + response.statusCode);
         var $ = cheerio.load(body);
+        var collection = [];
         $('#main-content > div.push').each(function() {
             var item = new schema.schema();
             item.tag = $(this).find('span.push-tag').text().trim();
@@ -38,10 +39,9 @@ function runFetch (article, eventEmitter) {
             item.picture = [];
             item.picture.push($(this).next('div.richcontent').find('img').attr('src'));
             item = getLinkInContent(item);
-            addToDB(item);
+            addToDB(item, collection);
         });
-        console.log('crawl finished!');
-        eventEmitter.emit('crawlFin', schema.collection.data);
+        callback(collection);
     });
 }
 

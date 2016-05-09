@@ -1,8 +1,6 @@
 var request = require('request');
 var cheerio = require('cheerio');
-var fs = require('fs');
 var schema = require('./models.js');
-var api = require('./api.js');
 
 
 var getLinkInContent = function(item) {
@@ -19,8 +17,8 @@ var getLinkInContent = function(item) {
 };
 
 
-function addToDB(item) {
-    schema.collection.insert(item);
+function addToDB(item, collection) {
+    collection.push(item);
 }
 
 
@@ -32,6 +30,7 @@ function runFetch (article, callback) {
         }
         console.log("Status code: " + response.statusCode);
         var $ = cheerio.load(body);
+        var collection = [];
         $('#main-content > div.push').each(function() {
             var item = new schema.schema();
             item.tag = $(this).find('span.push-tag').text().trim();
@@ -40,11 +39,9 @@ function runFetch (article, callback) {
             item.picture = [];
             item.picture.push($(this).next('div.richcontent').find('img').attr('src'));
             item = getLinkInContent(item);
-            addToDB(item);
+            addToDB(item, collection);
         });
-        callback(schema.collection.data);
-        schema.collection.removeDataOnly();
-        // schema.collection.chain().remove();
+        callback(collection);
     });
 }
 

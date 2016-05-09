@@ -1,8 +1,7 @@
 var request = require('request');
 var cheerio = require('cheerio');
 var fs = require('fs');
-// var article = 'https://www.ptt.cc/bbs/Tainan/M.1388172150.A.860.html';
-var schema = require('./loki_models.js');
+var schema = require('./models.js');
 
 
 var getLinkInContent = function(item) {
@@ -19,17 +18,22 @@ var getLinkInContent = function(item) {
 };
 
 
-var runFetch = function (article) {
+function addToDB(item) {
+    return schema.collection.insert(item);
+}
+
+// var runFetch = function (article) {
+function runFetch (article) {
     console.log("target: " + article);
-    var outer_data = [];
+    var data;
+    var test = 1;
     request(article, function(error, response, body) {
         if(error) {
             console.log("Error: " + error);
         }
         console.log("Status code: " + response.statusCode);
-
         var $ = cheerio.load(body);
-        $('#main-content > div.push').each(function() {
+        var run = $('#main-content > div.push').each(function() {
             var item = new schema.schema();
             item.tag = $(this).find('span.push-tag').text().trim();
             item.content = $(this).find('span.push-content').text().trim();
@@ -37,10 +41,13 @@ var runFetch = function (article) {
             item.picture = [];
             item.picture.push($(this).next('div.richcontent').find('img').attr('src'));
             item = getLinkInContent(item);
-            schema.collection.insert(item);
+            addToDB(item);
         });
+        run.on('done', function() {
+            console.log('done!');
+        });
+        console.log(schema.collection);
     });
-    console.log(schema);
-};
+}
 
 module.exports = runFetch;

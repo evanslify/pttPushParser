@@ -1,5 +1,7 @@
+var events = require('events');
+// var eventEmitter = new events.EventEmitter();
 var pttcrawl = require('./ptt.js');
-var article = 'https://www.ptt.cc/bbs/Tainan/M.1388172150.A.860.html';
-
-var result = pttcrawl(article);
-console.log(result);
+var result = function (article, eventEmitter) {
+    pttcrawl(article, eventEmitter);
+};
+module.exports = result;

@@ -2,6 +2,8 @@ var request = require('request');
 var cheerio = require('cheerio');
 var fs = require('fs');
 var schema = require('./models.js');
+// var events = require('events');
+// var eventEmitter = new events.EventEmitter();
 
 
 var getLinkInContent = function(item) {
@@ -19,21 +21,19 @@ var getLinkInContent = function(item) {
 
 
 function addToDB(item) {
-    return schema.collection.insert(item);
+    schema.collection.insert(item);
 }
 
 // var runFetch = function (article) {
-function runFetch (article) {
+function runFetch (article, eventEmitter) {
     console.log("target: " + article);
-    var data;
-    var test = 1;
     request(article, function(error, response, body) {
         if(error) {
             console.log("Error: " + error);
         }
         console.log("Status code: " + response.statusCode);
         var $ = cheerio.load(body);
-        var run = $('#main-content > div.push').each(function() {
+        $('#main-content > div.push').each(function() {
             var item = new schema.schema();
             item.tag = $(this).find('span.push-tag').text().trim();
             item.content = $(this).find('span.push-content').text().trim();
@@ -43,11 +43,14 @@ function runFetch (article) {
             item = getLinkInContent(item);
             addToDB(item);
         });
-        run.on('done', function() {
-            console.log('done!');
-        });
-        console.log(schema.collection);
+        console.log('crawl finished!');
+        eventEmitter.emit('crawlFin', schema.collection.data);
+        schema.db.save();
     });
+    var ringBell = function ringBell() {
+        console.log('ring ring ring');
+    };
+    eventEmitter.on('crawlFin', ringBell);
 }
 
 module.exports = runFetch;

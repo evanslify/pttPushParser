@@ -14,7 +14,5 @@
   },
   "devDependencies": {
     "express": "^4.13.4",
-    "urijs": "^1.18.0",
-    "x-ray": "^2.3.0"
   }
 }

@@ -3,6 +3,7 @@ var schema = function () {
     var content;
     var userid;
     var picture;
+    var data;
     return { tag, content, userid, picture };
 };
 

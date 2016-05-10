@@ -1,3 +1,10 @@
 #search {
     width: 1000px;
 }
+#imagecell > img {
+    width: auto;
+    height: 300px;
+}
+.nopicture {
+    display: none;
+}

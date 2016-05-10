@@ -9,14 +9,35 @@
     <body>
         <form id="searchbox" action="">
             <input id="search" type="text" placeholder="Type here" required>
-            <input id="submit" type="submit" value="Search">
+            <input id="submit" type="button" value="Search">
         </form>
 
-        <div class="table">
+        <div>
+            <table id="tablewrap">
+            <thead>
+                <tr>
+                    <th>userID</th>
+                    <th>content</th>
+                    <th>tag</th>
+                    <th>date</th>
+                    <th>picture</th>
 
+                </tr>
+            </thead>
+            <tbody class="tablebody">
+            </tbody>
+            </table>
         </div>
 
     <script src="https://code.jquery.com/jquery-2.2.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="static/js/tablesort.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="static/js/crawl.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function()
+            {
+                new Tablesort(document.getElementById('tablewrap'));
+            }
+        );
+    </script>
     </body>
 </html>

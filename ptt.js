@@ -22,6 +22,7 @@ function runFetch (article, callback) {
             item.tag = $(this).find('span.push-tag').text().trim();
             item.content = $(this).find('span.push-content').text().trim();
             item.userid = $(this).find('span.push-userid').text().trim();
+            item.date = $(this).find('span.push-ipdatetime').text().trim();
             item.picture = [];
             item.picture.push($(this).nextUntil('div.push').find('img').attr('src'));
             addToDB(item, collection);

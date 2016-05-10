@@ -7,9 +7,10 @@
         <link rel="stylesheet" href="static/css/style.css" type="text/css" media="screen" title="no title" charset="utf-8">
     </head>
     <body>
-        <form id="searchbox" action="">
+        <form id="searchbox" onSubmit="return run()">
             <input id="search" type="text" placeholder="Type here" required>
-            <input id="submit" type="button" value="Search">
+            <input id="submit" type="submit" value="Search">
+            <input id="clear" type="reset" value="Clear" onClick="return clearTable()">
         </form>
 
         <div>

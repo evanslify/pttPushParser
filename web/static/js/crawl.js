@@ -1,7 +1,8 @@
-$('#submit').on('click', function () {
-    var articleurl = $(this).prev().val();
+function run() {
+    var articleurl = $('#search').val();
     $.ajax({
-        url: 'http://localhost:3000',
+        url: 'http://192.168.1.132:8000/api/',
+        // url: 'http://localhost:3000',
         type: 'get',
         data: {'article': articleurl},
         success: function (data, textStatus, jqXHR) {
@@ -13,6 +14,15 @@ $('#submit').on('click', function () {
             console.log('ajax error: ' + errorThrown);
         }
     });
+}
+
+function clearTable() {
+    $('.tablebody').empty();
+}
+
+$('#searchbox').submit(function(e) {
+    e.preventDefault();
+    clearTable();
 });
 
 function writeToTable(json) {
